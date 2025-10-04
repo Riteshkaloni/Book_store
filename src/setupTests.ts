@@ -13,11 +13,10 @@ Object.defineProperty(window, 'localStorage', { value: new LocalStorageMock() })
 
 // Provide TextEncoder/TextDecoder for environments that don't have them (older Node)
 // react-router and some libs expect these globals when running under jsdom
+import { TextEncoder, TextDecoder } from 'util';
+
 if (typeof (window as any).TextEncoder === 'undefined') {
-  // Use synchronous require so globals are available immediately during test setup
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const util = require('util');
-  const { TextEncoder, TextDecoder } = util as any;
+  // Assign Node's TextEncoder/TextDecoder to window for jsdom testing environments
   (window as any).TextEncoder = TextEncoder;
   (window as any).TextDecoder = TextDecoder;
 }

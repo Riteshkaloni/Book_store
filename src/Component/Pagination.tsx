@@ -39,24 +39,25 @@ const Pagination: React.FC<Props> = ({ current, total, onPage, windowSize = 5 })
   }
 
   return (
-    <nav aria-label="Pagination" className="flex items-center gap-2">
+    // compact on small screens: smaller text/padding, tighter gap, allow horizontal scroll if needed
+    <nav aria-label="Pagination" className="flex items-center gap-1 sm:gap-2 overflow-x-auto px-2">
       <button
         onClick={() => onPage(Math.max(1, current - 1))}
         disabled={current === 1}
-        className={`px-3 py-1 rounded ${current === 1 ? 'opacity-50 cursor-not-allowed' : 'bg-slate-100 hover:bg-slate-200'}`}
+        className={`text-sm sm:text-base px-2 py-0.5 sm:px-3 sm:py-1 rounded ${current === 1 ? 'opacity-50 cursor-not-allowed' : 'bg-slate-100 hover:bg-slate-200'}`}
       >
         Prev
       </button>
 
       {pages.map((p, idx) =>
         p === '...' ? (
-          <span key={`e-${idx}`} className="px-2 text-sm text-gray-500">...</span>
+          <span key={`e-${idx}`} className="px-2 py-0.5 text-sm text-gray-500">...</span>
         ) : (
           <button
             key={p}
             onClick={() => onPage(p as number)}
             aria-current={p === current ? 'page' : undefined}
-            className={`px-3 py-1 rounded ${p === current ? 'bg-indigo-600 text-white' : 'bg-white hover:bg-slate-100'}`}
+            className={`text-sm sm:text-base px-2 py-0.5 sm:px-3 sm:py-1 rounded ${p === current ? 'bg-indigo-600 text-white' : 'bg-white hover:bg-slate-100'}`}
           >
             {p}
           </button>
@@ -66,7 +67,7 @@ const Pagination: React.FC<Props> = ({ current, total, onPage, windowSize = 5 })
       <button
         onClick={() => onPage(Math.min(total, current + 1))}
         disabled={current === total}
-        className={`px-3 py-1 rounded ${current === total ? 'opacity-50 cursor-not-allowed' : 'bg-slate-100 hover:bg-slate-200'}`}
+        className={`text-sm sm:text-base px-2 py-0.5 sm:px-3 sm:py-1 rounded ${current === total ? 'opacity-50 cursor-not-allowed' : 'bg-slate-100 hover:bg-slate-200'}`}
       >
         Next
       </button>

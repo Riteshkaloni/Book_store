@@ -24,11 +24,15 @@ const Navbar: React.FC = () => {
       <div className="container-max flex items-center justify-between gap-4 py-3">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
-          <img
-            src={logo}
-            alt="BookShelf Logo"
-            className="w-14 h-14 object-contain rounded-full shadow-sm"
-          />
+          {logo ? (
+            <img
+              src={logo}
+              alt="BookShelf Logo"
+              className="w-14 h-14 object-contain rounded-full shadow-sm"
+            />
+          ) : (
+            <div className="w-14 h-14 rounded-full bg-[var(--accent)] flex items-center justify-center text-white font-bold">B</div>
+          )}
           <span className="font-extrabold text-lg" style={{ color: "var(--text)" }}>
             BookShelf
           </span>

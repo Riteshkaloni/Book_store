@@ -101,3 +101,23 @@ body {
 
 /* Utility to center when content is small */
 .center-vertical { display:flex; align-items:center; justify-content:center; }
+
+/* Ensure book cards keep consistent height so wrapping titles don't resize the box */
+.book-card {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+}
+
+/* Clamp the title to max 2 lines with ellipsis */
+.book-title {
+	display: -webkit-box;
+	/* standard property for newer browsers / linter compatibility */
+	line-clamp: 2;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-word;
+}

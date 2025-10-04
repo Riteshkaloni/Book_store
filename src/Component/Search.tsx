@@ -4,6 +4,7 @@ import type { ChangeEvent, FormEvent } from 'react';
 interface SearchQuery {
   title: string;
   author: string;
+  genre?: string;
 }
 
 interface SearchFormProps {
@@ -13,16 +14,17 @@ interface SearchFormProps {
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
   const [title, setTitle] = useState<string>('');
   const [author, setAuthor] = useState<string>('');
+  const [genre, setGenre] = useState<string>('');
   const [error, setError] = useState<string>('');
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!title && !author) {
-      setError('Please fill at least Title or Author');
+    if (!title && !author && !genre) {
+      setError('Please fill at least Title, Author or Genre');
       return;
     }
     setError('');
-    onSearch({ title, author });
+    onSearch({ title, author, genre });
   };
 
   return (
@@ -37,6 +39,12 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
         placeholder="Author"
         value={author}
         onChange={(e: ChangeEvent<HTMLInputElement>) => setAuthor(e.target.value)}
+        className="rounded-lg border border-indigo-600 bg-indigo-800 text-gray-200 p-3 placeholder-indigo-400 focus:border-pink-400 focus:ring-2 focus:ring-pink-500 focus:outline-none transition"
+      />
+      <input
+        placeholder="Genre "
+        value={genre}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setGenre(e.target.value)}
         className="rounded-lg border border-indigo-600 bg-indigo-800 text-gray-200 p-3 placeholder-indigo-400 focus:border-pink-400 focus:ring-2 focus:ring-pink-500 focus:outline-none transition"
       />
       {error && (

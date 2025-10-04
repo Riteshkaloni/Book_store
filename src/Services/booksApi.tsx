@@ -17,40 +17,61 @@ export interface Book {
 }
 
 interface SearchParams {
+  // Either provide a raw query q or build from title/author/genre
+  q?: string;
   title?: string;
   author?: string;
   genre?: string;
+  maxResults?: number; // default 10, max 40
+  startIndex?: number; // pagination start index
 }
 
 // Search books function
+export interface SearchResult {
+  items: Book[];
+  totalItems: number;
+}
+
 export const searchBooks = async ({
+  q,
   title = "",
   author = "",
   genre = "",
-}: SearchParams = {}): Promise<Book[]> => {
+  maxResults = 10,
+  startIndex,
+}: SearchParams = {}): Promise<SearchResult> => {
   try {
-    const queryParts: string[] = [];
-    if (title) queryParts.push(`intitle:${title}`);
-    if (author) queryParts.push(`inauthor:${author}`);
-    if (genre) queryParts.push(genre);
+    let query = "";
+    if (q) query = q;
+    else {
+      const queryParts: string[] = [];
+      if (title) queryParts.push(`intitle:${title}`);
+      if (author) queryParts.push(`inauthor:${author}`);
+      if (genre) queryParts.push(genre);
+      query = queryParts.join("+");
+    }
 
-    const query = queryParts.join("+");
-    if (!query) return [];
+    if (!query) return { items: [], totalItems: 0 };
 
-    const res = await axios.get(
-      `https://www.googleapis.com/books/v1/volumes?q=${query}&ts=${Date.now()}`, // timestamp to avoid 304
-      {
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-      }
-    );
+    // Respect API limits
+    const safeMax = Math.min(Math.max(typeof maxResults === 'number' ? maxResults : 10, 1), 40);
+    const startPart = typeof startIndex === 'number' && startIndex > 0 ? `&startIndex=${startIndex}` : "";
 
-    return res.data.items || [];
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=${safeMax}${startPart}&ts=${Date.now()}`;
+
+    const res = await axios.get(url, {
+      headers: {
+        "Cache-Control": "no-cache",
+        Pragma: "no-cache",
+      },
+    });
+
+    const items: Book[] = res.data.items || [];
+    const totalItems: number = typeof res.data.totalItems === 'number' ? res.data.totalItems : items.length;
+    return { items, totalItems };
   } catch (error) {
     console.error("Error searching books:", error);
-    return [];
+    return { items: [], totalItems: 0 };
   }
 };
 

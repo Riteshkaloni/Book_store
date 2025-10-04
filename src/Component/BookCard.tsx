@@ -24,7 +24,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onFavorite, isFavorite }) => 
   const { title, authors, imageLinks } = book.volumeInfo;
 
   return (
-    <article className="book-card-hover rounded-xl p-4 transition-all duration-300 animate-fade-in glass-card" aria-labelledby={`book-${book.id}`} role="article">
+    <article className="book-card h-full flex flex-col justify-between book-card-hover rounded-xl p-4 transition-all duration-300 animate-fade-in glass-card" aria-labelledby={`book-${book.id}`} role="article">
       <div className="flex flex-col items-center">
         <div className="w-40 h-56 md:w-44 md:h-64 rounded-lg overflow-hidden flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01))' }}>
           {imageLinks?.thumbnail ? (
@@ -34,7 +34,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onFavorite, isFavorite }) => 
           )}
         </div>
 
-        <h2 id={`book-${book.id}`} className="mt-3 font-semibold text-lg text-center" style={{ color: 'var(--text)' }}>{title}</h2>
+  <h2 id={`book-${book.id}`} className="book-title mt-3 font-semibold text-lg text-center" style={{ color: 'var(--text)' }}>{title}</h2>
 
         <p className="text-sm text-center mt-1" style={{ color: 'var(--muted)' }}>{authors && authors.length ? authors.join(', ') : <span className="italic text-gray-400">Unknown Author</span>}</p>
       </div>

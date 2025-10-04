@@ -3,11 +3,14 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
 import { FavoritesProvider } from '../Context/FavoritesContext';
+import React, { Suspense } from 'react';
 
 function renderWithRouter(ui: React.ReactElement, route = '/') {
   return render(
     <FavoritesProvider>
-      <MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>
+      <MemoryRouter initialEntries={[route]}>
+        <Suspense fallback={<div>Loading...</div>}>{ui}</Suspense>
+      </MemoryRouter>
     </FavoritesProvider>
   );
 }

@@ -82,7 +82,7 @@ describe('Favorites context and BookCard integration', () => {
     // Initially empty
     expect(contextValue.favorites).toEqual([]);
 
-    // Add favorite (wrap in act because it updates state)
+    // Add favorite
     act(() => {
       contextValue.addFavorite(sampleBook);
     });

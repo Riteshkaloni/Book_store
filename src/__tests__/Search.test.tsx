@@ -10,7 +10,7 @@ describe('SearchForm', () => {
     const button = screen.getByRole('button', { name: /search/i });
     fireEvent.click(button);
 
-    expect(screen.getByText(/Please fill at least Title or Author/i)).toBeInTheDocument();
+    expect(screen.getByText(/Please fill at least Title, Author or Genre/i)).toBeInTheDocument();
     expect(onSearch).not.toHaveBeenCalled();
   });
 
@@ -24,8 +24,8 @@ describe('SearchForm', () => {
     const button = screen.getByRole('button', { name: /search/i });
     fireEvent.click(button);
 
-    expect(onSearch).toHaveBeenCalledWith({ title: 'React', author: '' });
-    expect(screen.queryByText(/Please fill at least Title or Author/i)).not.toBeInTheDocument();
+    expect(onSearch).toHaveBeenCalledWith({ title: 'React', author: '', genre: '' });
+    expect(screen.queryByText(/Please fill at least Title, Author or Genre/i)).not.toBeInTheDocument();
   });
 
   test('submits when author provided', () => {
@@ -38,6 +38,19 @@ describe('SearchForm', () => {
     const button = screen.getByRole('button', { name: /search/i });
     fireEvent.click(button);
 
-    expect(onSearch).toHaveBeenCalledWith({ title: '', author: 'Kent' });
+    expect(onSearch).toHaveBeenCalledWith({ title: '', author: 'Kent', genre: '' });
+  });
+
+  test('submits when genre provided', () => {
+    const onSearch = jest.fn();
+    render(<SearchForm onSearch={onSearch} />);
+
+    const genreInput = screen.getByPlaceholderText(/genre/i);
+    fireEvent.change(genreInput, { target: { value: 'Programming' } });
+
+    const button = screen.getByRole('button', { name: /search/i });
+    fireEvent.click(button);
+
+    expect(onSearch).toHaveBeenCalledWith({ title: '', author: '', genre: 'Programming' });
   });
 });

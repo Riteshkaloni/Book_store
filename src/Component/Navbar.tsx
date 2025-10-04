@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { FaHeart, FaSun, FaMoon } from "react-icons/fa";
 import { FavoritesContext } from "../Context/FavoritesContext";
 import { ThemeContext } from "../Theme/ThemeContext";
@@ -9,7 +9,6 @@ const Navbar: React.FC = () => {
   const location = useLocation();
   const { favorites } = useContext(FavoritesContext)!;
   const { theme, toggleTheme } = useContext(ThemeContext)!;
-  const [open, setOpen] = useState(false);
 
   const linkClass = (path: string) =>
     `px-4 py-2 rounded-md font-semibold transition-all duration-300 text-sm` +
@@ -61,82 +60,30 @@ const Navbar: React.FC = () => {
           </button>
         </div>
 
-        {/* Mobile controls */}
+        {/* Mobile controls: theme toggle + heart icon that links to Favorites */}
         <div className="md:hidden flex items-center gap-3">
           <button
             onClick={toggleTheme}
             title="Toggle theme"
             className="p-2 rounded-md"
             style={{ color: "var(--text)" }}
+            aria-label="Toggle theme"
           >
             {theme === "dark" ? <FaSun /> : <FaMoon />}
           </button>
 
-          <button
-            onClick={() => setOpen((s) => !s)}
-            aria-label="Toggle menu"
-            className="p-2 rounded-md border transition-all duration-300"
-            style={{ borderColor: "rgba(0,0,0,0.06)" }}
-          >
-            {open ? (
-              <div style={{ width: 22, height: 22, position: "relative" }}>
-                <div
-                  style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: 2,
-                    background: "var(--text)",
-                    transform: "rotate(45deg)",
-                    top: "50%",
-                    left: 0,
-                    transition: "0.3s",
-                  }}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: 2,
-                    background: "var(--text)",
-                    transform: "rotate(-45deg)",
-                    top: "50%",
-                    left: 0,
-                    transition: "0.3s",
-                  }}
-                />
-              </div>
-            ) : (
-              <div style={{ width: 22 }}>
-                <div style={{ height: 2, background: "var(--text)", marginBottom: 4 }} />
-                <div style={{ height: 2, background: "var(--text)", marginBottom: 4 }} />
-                <div style={{ height: 2, background: "var(--text)" }} />
-              </div>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      <div
-        className={`transition-all duration-300 md:hidden overflow-hidden ${
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="container-max flex flex-col gap-3 py-4">
-          <Link
-            to="/favorites"
-            onClick={() => setOpen(false)}
-            className={`${linkClass("/favorites")} relative flex items-center`}
-          >
-            <FaHeart className="w-5 h-5 mr-2 text-red-500" /> Favorites
+          <Link to="/favorites" className="relative p-2 rounded-md" aria-label="Favorites">
+            <FaHeart className="w-6 h-6 text-red-500" />
             {favorites.length > 0 && (
-              <span className="ml-2 text-xs bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center font-bold shadow">
+              <span className="absolute -top-1 -right-1 text-xs bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center font-bold shadow">
                 {favorites.length > 99 ? "99+" : favorites.length}
               </span>
             )}
           </Link>
         </div>
       </div>
+
+      {/* Mobile menu removed: navigation goes directly via the heart icon on small screens */}
     </nav>
   );
 };

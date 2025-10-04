@@ -1,4 +1,4 @@
-import React from 'react';
+// React import not required with new JSX transform
 import { render, screen, fireEvent } from '@testing-library/react';
 import SearchForm from '../Component/Search';
 

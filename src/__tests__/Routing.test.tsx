@@ -1,4 +1,4 @@
-import React from 'react';
+// React import not required with new JSX transform
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../App';

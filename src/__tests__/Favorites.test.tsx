@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { FavoritesProvider, FavoritesContext } from '../Context/FavoritesContext';

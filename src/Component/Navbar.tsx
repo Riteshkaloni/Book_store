@@ -8,7 +8,7 @@ import logo from "../assets/logo.png";
 const Navbar: React.FC = () => {
   const location = useLocation();
   const { favorites } = useContext(FavoritesContext)!;
-  const { theme, toggleTheme, color, setColor } = useContext(ThemeContext)!;
+  const { theme, toggleTheme } = useContext(ThemeContext)!;
   const [open, setOpen] = useState(false);
 
   const linkClass = (path: string) =>
@@ -37,10 +37,6 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-4">
-          <Link to="/" className={linkClass("/")}>
-            Search
-          </Link>
-
           <Link
             to="/favorites"
             className={`${linkClass("/favorites")} relative flex items-center`}
@@ -54,6 +50,7 @@ const Navbar: React.FC = () => {
             )}
           </Link>
 
+          {/* Theme toggle */}
           <button
             onClick={toggleTheme}
             title="Toggle theme"
@@ -62,29 +59,6 @@ const Navbar: React.FC = () => {
           >
             {theme === "dark" ? <FaSun /> : <FaMoon />}
           </button>
-
-          <div className="flex items-center gap-2">
-            {(["blue", "red", "green", "purple"] as const).map((c) => (
-              <button
-                key={c}
-                onClick={() => setColor(c)}
-                aria-label={`Set ${c} accent`}
-                className={`w-7 h-7 rounded-full border-2 border-transparent transition-transform hover:scale-110`}
-                style={{
-                  background:
-                    c === "blue"
-                      ? "#2563eb"
-                      : c === "red"
-                      ? "#ef4444"
-                      : c === "green"
-                      ? "#16a34a"
-                      : "#7c3aed",
-                  boxShadow: color === c ? "0 6px 18px rgba(0,0,0,0.15)" : undefined,
-                  transform: color === c ? "scale(1.08)" : undefined,
-                }}
-              />
-            ))}
-          </div>
         </div>
 
         {/* Mobile controls */}
@@ -98,7 +72,6 @@ const Navbar: React.FC = () => {
             {theme === "dark" ? <FaSun /> : <FaMoon />}
           </button>
 
-          {/* Hamburger / Cross button */}
           <button
             onClick={() => setOpen((s) => !s)}
             aria-label="Toggle menu"
@@ -106,7 +79,6 @@ const Navbar: React.FC = () => {
             style={{ borderColor: "rgba(0,0,0,0.06)" }}
           >
             {open ? (
-              // Cross Icon
               <div style={{ width: 22, height: 22, position: "relative" }}>
                 <div
                   style={{
@@ -134,7 +106,6 @@ const Navbar: React.FC = () => {
                 />
               </div>
             ) : (
-              // Hamburger Icon
               <div style={{ width: 22 }}>
                 <div style={{ height: 2, background: "var(--text)", marginBottom: 4 }} />
                 <div style={{ height: 2, background: "var(--text)", marginBottom: 4 }} />
@@ -152,9 +123,6 @@ const Navbar: React.FC = () => {
         }`}
       >
         <div className="container-max flex flex-col gap-3 py-4">
-          <Link to="/" onClick={() => setOpen(false)} className={linkClass("/")}>
-            Search
-          </Link>
           <Link
             to="/favorites"
             onClick={() => setOpen(false)}
@@ -167,28 +135,6 @@ const Navbar: React.FC = () => {
               </span>
             )}
           </Link>
-
-          <div className="flex items-center gap-2 pt-2">
-            {(["blue", "red", "green", "purple"] as const).map((c) => (
-              <button
-                key={c}
-                onClick={() => setColor(c)}
-                aria-label={`Set ${c} accent`}
-                className={`w-8 h-8 rounded-full border-2 border-transparent transition-transform hover:scale-110`}
-                style={{
-                  background:
-                    c === "blue"
-                      ? "#2563eb"
-                      : c === "red"
-                      ? "#ef4444"
-                      : c === "green"
-                      ? "#16a34a"
-                      : "#7c3aed",
-                  boxShadow: color === c ? "0 6px 18px rgba(0,0,0,0.12)" : undefined,
-                }}
-              />
-            ))}
-          </div>
         </div>
       </div>
     </nav>

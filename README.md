@@ -1,3 +1,127 @@
+# Book Store (React + TypeScript)
+
+A small React + TypeScript project that demonstrates a searchable book list, a favorites list (persisted to localStorage), and routing to book details. Built with Vite, TailwindCSS, React Router, and Jest + Testing Library for tests.
+
+## Quick overview
+
+- Framework: React (TypeScript)
+- Bundler: Vite
+- Styling: Tailwind CSS
+- Routing: react-router-dom (BrowserRouter, Route-based routing)
+- State: React Context (Favorites) persisted to localStorage
+- Tests: Jest + React Testing Library
+
+## Prerequisites
+
+- Node.js (recommended LTS, e.g. 18+)
+- npm (bundled with Node.js) or an alternative (yarn/pnpm) — instructions below use npm
+
+## Setup
+
+1. Clone the repository and open the project folder:
+
+   git clone <repo-url>
+   cd Book-store
+
+2. Install dependencies:
+
+   npm install
+
+## Development
+
+- Start the dev server (Vite):
+
+  npm run dev
+
+- Open http://localhost:5173 (or the port shown by Vite) in your browser.
+
+## Build & Preview
+
+- Build for production:
+
+  npm run build
+
+- Preview the production build locally:
+
+  npm run preview
+
+## Tests & Linting
+
+- Run tests (Jest):
+
+  npm run test
+
+- Run tests in watch mode:
+
+  npm run test:watch
+
+- Run linter (ESLint):
+
+  npm run lint
+
+## Project structure (important files)
+
+- `src/main.tsx` — App root, wraps the app with `BrowserRouter`, `ThemeProvider`, and `FavoritesProvider`.
+- `src/App.tsx` — Routes and shared layout (includes `Navbar`).
+- `src/Component/Search.tsx` — Controlled search form component with simple validation.
+- `src/Context/FavoritesContext.tsx` — React Context that stores favorites and persists them to `localStorage`.
+- `src/Pages/BookDetails.tsx` — Lazy-loaded route for book details (loaded with React.lazy + Suspense).
+
+## Routing
+
+Routing uses `react-router-dom` with `BrowserRouter` at the root (`src/main.tsx`) and `Routes`/`Route` in `src/App.tsx`.
+
+- Routes defined:
+  - `/` -> `Home` (search and results)
+  - `/book/:id` -> `BookDetails` (lazy loaded with `React.lazy` and `Suspense` to reduce initial bundle)
+  - `/favorites` -> `Favorites`
+
+Trade-offs:
+- BrowserRouter is the simplest choice for single-page web apps. If you need SSR or special base paths, consider `MemoryRouter` or server-based routing.
+- Lazy-loading `BookDetails` reduces initial bundle size at the cost of a small load delay when navigating to details.
+
+## Form handling
+
+Search uses a controlled form pattern (`useState` for each field). On submit it validates that at least one of the fields (title, author or genre) is provided and calls an `onSearch` handler passed from the parent. This keeps the component reusable and easy to test.
+
+Trade-offs:
+- Controlled inputs make validation and UI feedback straightforward, but if the form grows large you might prefer a form library (React Hook Form or Formik) for performance and ergonomics.
+
+## State management
+
+Favorites are handled by a small React Context (`FavoritesContext`) that exposes `favorites`, `addFavorite`, and `removeFavorite` helpers.
+
+Persistence: favorites are persisted to `localStorage` using a `useEffect` that syncs the array whenever it changes.
+
+Trade-offs:
+- Context + localStorage is simple and fits the small app size. For larger or more complex apps consider using a dedicated state store (Redux, Zustand) or remote persistence. Also note localStorage is synchronous and may block on very large payloads.
+
+## Testing strategy
+
+- Unit and component tests use Jest and React Testing Library. Existing tests live in `src/__tests__` and mock assets are in `src/__mocks__`.
+
+Tips:
+- Tests run with `npm run test`. Use `npm run test:watch` for interactive development.
+
+## Notes & next steps
+
+- The app already uses TypeScript types for book data and components; adding more exhaustive types and prop-types where needed will help maintainability.
+- For accessibility improvements, run an a11y linter (axe) and ensure keyboard navigation and proper ARIA attributes.
+
+---
+
+Files changed:
+
+- `README.md` — project overview, setup and architecture notes (added)
+
+Commit:
+
+- chore: add README.md with setup and architecture notes
+
+If you'd like, I can also:
+- add a short CONTRIBUTING.md or developer note with recommended Node and npm versions
+- add a GitHub Actions workflow to run tests and lint on push/PR
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
